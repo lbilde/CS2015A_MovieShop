@@ -38,12 +38,23 @@ namespace MovieShopDll.Managers
 
         public Genre Update(Genre t)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Entry(t).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return t;
+            }
+            
         }
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            using (var db = new MovieShopContext())
+            {
+                db.Entry(db.Genres.FirstOrDefault(x => x.Id == id)).State = System.Data.Entity.EntityState.Deleted;
+                db.SaveChanges();
+                return db.Genres.FirstOrDefault(x => x.Id == id) == null;
+            }
         }
     }
 }
